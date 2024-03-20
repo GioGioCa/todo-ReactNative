@@ -6,7 +6,7 @@ import {Task} from './App';
 
 interface ItemProps {
     item: Task;
-    markDone: () => void;
+    markDone: (task: Task) => void;
     deleteFunction: () => void;
 
 }
@@ -14,7 +14,7 @@ interface ItemProps {
 export default function RenderItem({item, markDone, deleteFunction}: ItemProps) {
     return (
         <View style={styles.itemContainer}>
-        <TouchableOpacity onPress={markDone}>
+        <TouchableOpacity onPress={() => markDone(item)}>
             <Text style={item.done ? styles.textDone : styles.text}>
             {item.tittle}
             </Text>

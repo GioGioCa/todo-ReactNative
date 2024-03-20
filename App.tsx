@@ -23,7 +23,13 @@ export default function App() {
     setTasks(tmp);
     setText('');
   };
-  const markDone = () => {};
+  const markDone = (task: Task) => {
+    const tmp = [...tasks];
+    const index = tmp.findIndex(elemento => elemento.tittle === task.tittle);
+    const todo = tmp[index];
+    todo.done = !todo.done;
+    setTasks(tmp);
+  };
   const deleteFunction = () => {};
   return (
     <View style={styles.container}>
