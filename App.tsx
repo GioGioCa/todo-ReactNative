@@ -30,7 +30,14 @@ export default function App() {
     todo.done = !todo.done;
     setTasks(tmp);
   };
-  const deleteFunction = () => {};
+
+  const deleteFunction = (task: Task) => {
+    const tmp = [...tasks];
+    const index = tmp.findIndex(elemento => elemento.tittle === task.tittle);
+    tmp.splice(index, 1);
+    setTasks(tmp);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tareas pendientes</Text>
