@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#6f6f6f',
   },
+  textDone: {
+    fontSize: 16,
+    color: '#6f6f6f',
+    textDecorationLine: 'line-through',
+  },
   whiteText: {
     fontSize: 16,
     color: '#FFF',
@@ -45,11 +50,22 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.25,
     borderRadius: 10,
   },
-  scrollContainer: {},
+  scrollContainer: {
+    marginTop: 20,
+  },
   itemContainer: {
     paddingVertical: 20,
     borderBottomColor: '#e4e4e4',
     borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  removeButton: {
+    backgroundColor: '#F33D3D',
+    justifyContent: 'center',
+    alignContent: 'center',
+    paddingHorizontal: 15,
+    borderRadius: 10,
   },
 });
 
@@ -75,7 +91,17 @@ export default function App() {
   function renderItem({item}: {item: Task}) {
     return (
       <View style={styles.itemContainer}>
-        <Text style={styles.text}>{item.tittle}</Text>
+        <TouchableOpacity>
+          <Text style={item.done ? styles.textDone : styles.text}>
+            {item.tittle}
+          </Text>
+          <Text style={styles.text}>{item.date.toLocaleDateString()}</Text>
+        </TouchableOpacity>
+        {item.done && (
+          <TouchableOpacity style={styles.removeButton}>
+            <Text style={styles.whiteText}>Eliminar</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }
