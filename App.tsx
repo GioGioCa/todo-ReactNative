@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  FlatList,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -44,8 +45,40 @@ const styles = StyleSheet.create({
     width: Dimensions.get('screen').width * 0.25,
     borderRadius: 10,
   },
+  scrollContainer: {},
+  itemContainer: {
+    paddingVertical: 20,
+    borderBottomColor: '#e4e4e4',
+    borderBottomWidth: 1,
+  },
 });
+
+const task = [
+  {
+    tittle: 'Alimentar mascota',
+    done: false,
+    date: new Date(),
+  },
+  {
+    tittle: 'Alimentarme',
+    done: false,
+    date: new Date(),
+  },
+];
+
+interface Task {
+  tittle: string;
+  done: boolean;
+  date: Date;
+}
 export default function App() {
+  function renderItem({item}: {item: Task}) {
+    return (
+      <View style={styles.itemContainer}>
+        <Text style={styles.text}>{item.tittle}</Text>
+      </View>
+    );
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tareas pendientes</Text>
@@ -57,6 +90,9 @@ export default function App() {
         <TouchableOpacity style={styles.addButton}>
           <text>Agregar</text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.scrollContainer}>
+        <FlatList renderItem={renderItem} data={task} />
       </View>
     </View>
   );
