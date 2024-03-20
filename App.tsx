@@ -1,20 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import styles from './Styles';
 import RenderItem from './renderItem';
-
-const task = [
-  {
-    tittle: 'Alimentar mascota',
-    done: false,
-    date: new Date(),
-  },
-  {
-    tittle: 'Alimentarme',
-    done: false,
-    date: new Date(),
-  },
-];
 
 export interface Task {
   tittle: string;
@@ -22,6 +9,20 @@ export interface Task {
   date: Date;
 }
 export default function App() {
+  const [text, setText] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  const addTask = () => {
+    const tmp = [...tasks];
+    const newTask = {
+      tittle: text,
+      done: false,
+      date: new Date(),
+    };
+    tmp.push(newTask);
+    setTasks(tmp);
+    setText('');
+  };
   const markDone = () => {};
   const deleteFunction = () => {};
   return (
@@ -30,9 +31,11 @@ export default function App() {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Agregar una nueva tarea"
+          onChangeText={(t: string) => setText(t)}
+          value={text}
           style={styles.textInput}
         />
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity style={styles.addButton} onPress={addTask}>
           <text>Agregar</text>
         </TouchableOpacity>
       </View>
@@ -45,7 +48,7 @@ export default function App() {
               markDone={markDone}
             />
           )}
-          data={task}
+          data={tasks}
         />
       </View>
     </View>
