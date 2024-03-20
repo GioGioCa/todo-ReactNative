@@ -21,7 +21,7 @@ export default function RenderItem({
         <Text style={item.done ? styles.textDone : styles.text}>
           {item.tittle}
         </Text>
-        <Text style={styles.text}>{item.date.toLocaleDateString()}</Text>
+        <Text style={styles.text}>{new Date(item.date).toLocaleDateString()}</Text>
       </TouchableOpacity>
       {item.done && (
         <TouchableOpacity

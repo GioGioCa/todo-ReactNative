@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import styles from './Styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RenderItem from './renderItem';
 
 export interface Task {
@@ -11,6 +12,32 @@ export interface Task {
 export default function App() {
   const [text, setText] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  const storeData = async (value: Task[]) => {
+    try {
+      await AsyncStorage.setItem('mytodo-tasks', JSON.stringify(value));
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('mytodo-tasks');
+      //nombre DB 'mytodo-tasks'
+      if (value !== null) {
+        // value previously stored
+        const taskLocal = JSON.parse(value);
+        setTasks(taskLocal);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const addTask = () => {
     const tmp = [...tasks];
@@ -29,6 +56,7 @@ export default function App() {
     const todo = tmp[index];
     todo.done = !todo.done;
     setTasks(tmp);
+    storeData(tmp);
   };
 
   const deleteFunction = (task: Task) => {
@@ -36,6 +64,7 @@ export default function App() {
     const index = tmp.findIndex(elemento => elemento.tittle === task.tittle);
     tmp.splice(index, 1);
     setTasks(tmp);
+    storeData(tmp);
   };
 
   return (
